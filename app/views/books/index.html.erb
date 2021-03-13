@@ -1,2 +1,58 @@
-<h1>Books#index</h1>
-<p>Find me in app/views/books/index.html.erb</p>
+<!--投稿一覧-->
+
+<!--サクセスメッセージ-->
+<p><%= flash[:notice] %></p>
+<div class="index">
+  <h1 class="index-heading">Books</h1>
+    <table>
+      <thead>
+        <tr>
+          <th width="200px">Title</th>
+          <th width="400px">Body</th>
+          <th width="200px"></th>
+        </tr>
+      </thead>
+      <%= @books.each do |book| %>
+        <tbody>
+          <tr>
+            <td class="index-box-title"><%= books.title%></td>
+            <td class="index-box-body"><%= books.body %></td>
+            <td class="index-links">
+              <span class="link"><%= link_to "Show",book_path(book.id), class: "show_#{book.id}" %></span>
+              <span class="link"><%= link_to "Edit",edit_book_path(book.id), class: "edit_#{book.id} "%></span>
+              <span class="link"><%= link_to "Destroy",book_path(bok.id), method: :delete, "data-confirm"=>"Are you sure?", class: "destroy_#{book.id}" %></span>
+            </td>
+          </tr>
+        </tbody>
+      <% end %>
+    </table>
+</div>
+
+<!--新規投稿機能-->
+<div class="new">
+  <h2>New Book</h2>
+  <% if @book.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralinze(@book.errors.count, "error") %> prohibited this book from being saved:</h2>
+      <ul>
+        <%= @book.error.full_messages.each do |message|%>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <%= form_with model:@book, local:true do |f| %> <!--@bookからフォーム要素を生成-->
+    <p>
+      <%= f.label :title, "Title" %><br> <!--対応するラベルを生成-->
+      <%= f.text_field :title %> <!--テキストの入力フォームを生成-->
+    </p>
+    <p>
+      <%= f.label :body, "Body" %><br>
+      <%= f.text_area :body %>
+    </p>
+
+    <%= f.submit "Create Book" %> <!--送信ボタンを生成-->
+  <% end %>
+</div>
